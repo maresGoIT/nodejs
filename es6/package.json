@@ -1,0 +1,7 @@
+{
+  "name": "math",
+  "version": "1.0.0",
+  "author": "Mares Popa <email@example.com>",
+  "type": "module",
+  "homepage": "math.js"
+}
