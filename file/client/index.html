@@ -6,8 +6,37 @@
     <title>Document</title>
   </head>
   <body>
-    <form action="/profile" method="post" enctype="multipart/form-data">
+    <h2>Default Form</h2>
+    <!-- Default:  enctype="application/x-www-form-urlencoded" -->
+    <form method="post">
+      <input type="text" name="username" />
+      <input type="email" name="email" />
       <input type="file" name="avatar" />
+
+      <button>Trimite</button>
     </form>
+    <!-- Form Data: username=test&email=test%40test.com&avatar=Screenshot+2024-03-11+164643.png -->
+
+    <h2>Text/Plain Form</h2>
+    <form method="post" enctype="text/plain">
+      <input type="text" name="username" />
+      <input type="email" name="email" />
+      <input type="file" name="avatar" />
+
+      <button>Trimite</button>
+    </form>
+    <!-- Text: username=test
+email=test@test.com
+avatar=Screenshot 2024-03-11 164643.png -->
+
+    <h2>Multi-part</h2>
+    <form method="post" enctype="multipart/form-data">
+      <input type="text" name="username" />
+      <input type="email" name="email" />
+      <input type="file" name="avatar" />
+
+      <button>Trimite</button>
+    </form>
+    <!-- -->
   </body>
 </html>
