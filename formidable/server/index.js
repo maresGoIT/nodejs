@@ -30,7 +30,7 @@ app.post("/profile", function (req, res, next) {
       fs.rename(file.filepath, newFilepath, (err) => err);
     });
 
-    return res.status(200).json({ message: " File Uploaded " });
+    return res.status(303).json({ message: " File Uploaded " });
   });
 });
 

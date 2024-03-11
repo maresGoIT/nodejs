@@ -20,7 +20,7 @@ app.post("/profile", function (req, res) {
       res.status(500).send("A aparut o eroare");
     }
 
-    res.status(200).send("Fisierul a fost incarcat");
+    res.status(303).send("Fisierul a fost incarcat");
     console.dir(req.body);
     // I can save Avatar:req.file, Name: req.body.name, Email: req.body.email
     // Everything went fine.
