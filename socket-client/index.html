@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.io Chat</title>
+    <style>
+      body {
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      #form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+        width: 100%;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      input {
+        border: 1px solid #f3fe;
+        padding: 16px 24px;
+        flex-grow: 1;
+        margin: 0.25rem;
+      }
+
+      input:focus {
+        outline: none;
+      }
+
+      button {
+        padding: 8px 16px;
+      }
+
+      #form > button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #messages > li {
+        padding: 0.5rem 1rem;
+      }
+      #messages > li:nth-child(odd) {
+        background: #efefef;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Socket Client</h1>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <label>
+        <span>From</span>
+        <input id="user" type="text" />
+      </label>
+      <label>
+        <span>Message</span>
+        <input id="message" type="textarea" autocomplete="off" />
+      </label>
+
+      <button type="submit">Send</button>
+    </form>
+
+    <script
+      src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+      integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const socket = io("http://127.0.0.1:3000/");
+
+      const form = document.getElementById("form");
+      const user = document.getElementById("user");
+      const message = document.getElementById("message");
+      const messages = document.getElementById("messages");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        if (message.value) {
+          socket.emit("chat message", {
+            from: user.value,
+            message: message.value,
+          });
+          message.value = "";
+        }
+      });
+
+      socket.on("chat message", (data) => {
+        const item = document.createElement("li");
+        item.textContent = `${data?.from}: ${data?.message}`;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script>
+  </body>
+</html>

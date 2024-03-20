@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSocket Chat</title>
+  </head>
+  <body>
+    <h2>WebSocket Chat</h2>
+    <div id="chat"></div>
+    <form onsubmit="return sendMessage(event)">
+      <label>
+        <input type="name" id="usernameInput" placeholder="Username" />
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+      </label>
+      <button type="submit">Send</button>
+    </form>
+
+    <script>
+      var ws = new WebSocket("ws://localhost:8080");
+      ws.binaryType = "blob";
+
+      var chat = document.getElementById("chat");
+
+      ws.onmessage = function (event) {
+        var messageParagraph = document.createElement("p");
+
+        if (event.data instanceof Blob) {
+          reader = new FileReader();
+          reader.onload = () => {
+            const parsedData = JSON.parse(reader.result);
+            console.log(JSON.stringify(reader.result));
+            messageParagraph.innerHTML = `<strong>${parsedData.username}</strong>: ${parsedData.message}`;
+            chat.appendChild(messageParagraph);
+          };
+          reader.readAsText(event.data);
+        } else {
+          console.log("Result2: " + event.data);
+          messageParagraph.innerHTML = event.data;
+          chat.appendChild(messageParagraph);
+        }
+      };
+
+      function sendMessage(e) {
+        e.preventDefault();
+
+        const message = document.getElementById("messageInput");
+        const user = document.getElementById("usernameInput");
+
+        console.dir(message.value);
+
+        ws.send(
+          JSON.stringify({
+            username: user.value,
+            message: message.value,
+          })
+        );
+
+        message.value = "";
+      }
+    </script>
+  </body>
+</html>
